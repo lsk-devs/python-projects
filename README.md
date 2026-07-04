@@ -9,7 +9,6 @@ Each project reflects what I knew at the time it was made. Instead of deleting o
 ## Repository Structure
 
 - `2nde/` → Projects created during my final year of secondary school before starting NSI.
-- `1ere/` → Projects created during my first year of high school with the NSI specialization.
 - More folders will be added as I continue learning.
 
 ## Technologies
