@@ -4,78 +4,208 @@ from time import sleep
 books = []
 
 
-def library_manager():
-    max_choices = ["1", "2", "3", "4", "5", "6"]
+def clear_screen():
+    os.system("cls" if os.name == "nt" else "clear")
 
-    blacklist = [
-        "@", "#", "$", "%", "&", "*", "!", "?",
-        "/", "\\", "|", "=", "+", "<", ">",
-        "{", "}", "[", "]", "(", ")", ";", ":"
-    ]
+def is_valid_title(title):
+    if len(title) == 0:
+        return False
 
+    for char in title:
+        if not char.isalpha() and char != " ":
+            return False
+
+    return True
+
+
+def add_book():
     while True:
-        print("""
-            ========================================
-                📚 PERSONAL LIBRARY 📚
-            ========================================
+        clear_screen()
+        print("📖 Add a book")
+        print("----------")
+        title = input("Book title: ").strip()
 
-                [1] Add a book
-                [2] Show books
-                [3] Search for a book
-                [4] Remove a book
-                [5] Number of books
-                [6] Quit
-
-            ========================================
-            """)
-
-        print()
-        choice = input(">> ")
-
-        if choice not in max_choices:
-            print("❌ Invalid choice.")
-            print("Please choose one of the following options: [1], [2], [3], [4], [5], [6]")
-            print()
-            input("Press Enter to return to the menu...")
-            os.system("cls" if os.name == "nt" else "clear")
+        if not title:
             sleep(1)
             continue
 
-        if choice == max_choices[0]:
-            os.system("cls" if os.name == "nt" else "clear")
+        if not is_valid_title(title):
+            print("❌ Invalid title.")
+        elif title in books:
+            print("❌ This book is already in the library.")
+        else:
+            books.append(title)
+            print("✅ Book added: " + title)
+
+        input("\nPress Enter to continue...")
+        break
+
+
+def show_books():
+    clear_screen()
+    print("📚 Book list")
+    print("---------")
+
+    if len(books) == 0:
+        print("❌ No books saved yet.")
+    else:
+        sorted_books = sorted(books)
+        for i in range(len(sorted_books)):
+            print(str(i + 1) + ". " + sorted_books[i])
+
+    input("\nPress Enter to continue...")
+
+
+def search_book():
+    while True:
+        clear_screen()
+        print("🔍 Search a book")
+        print("-------------")
+        keyword = input("Title or keyword: ").strip().lower()
+
+        if not keyword:
             sleep(1)
+            continue
 
-            while True:
-                print("📖 Enter the book title:")
-                book_title = input(">> ")
+        found = False
+        for book in books:
+            if keyword in book.lower():
+                print("✅ Found: " + book)
+                found = True
 
-                invalid = False
+        if not found:
+            print("❌ No book matches your search.")
 
-                for character in book_title:
-                    if character in blacklist:
-                        print("❌ Invalid title (special characters are not allowed).")
-                        input("Press Enter to try again...")
-                        os.system("cls" if os.name == "nt" else "clear")
-                        invalid = True
-                        break
+        input("\nPress Enter to continue...")
+        break
 
-                if invalid:
-                    continue
 
-                if book_title.isdigit():
-                    print("❌ Invalid title.")
-                    input("Press Enter to try again...")
-                    os.system("cls" if os.name == "nt" else "clear")
-                    continue
+def remove_book():
+    while True:
+        clear_screen()
+        print("🗑️ Remove a book")
+        print("-------------")
+        title = input("Title of the book to remove: ").strip()
 
-                books.append(book_title)
-                print("✅ Book added successfully!")
-                print()
-                input("Press Enter to return to the menu...")
-                os.system("cls" if os.name == "nt" else "clear")
-                sleep(1)
+        if not title:
+            sleep(1)
+            continue
+
+        if not is_valid_title(title):
+            print("❌ Invalid title.")
+            input("\nPress Enter to continue...")
+            break
+
+        matches = []
+        for book in books:
+            if title.lower() in book.lower():
+                matches.append(book)
+
+        if len(matches) == 0:
+            print("❌ This book was not found.")
+            input("\nPress Enter to continue...")
+            break
+
+        print("")
+        for i in range(len(matches)):
+            print(str(i + 1) + ". " + matches[i])
+
+        choice = input("\nEnter the number of the book to remove (or 0 to cancel): ").strip()
+
+        if not choice.isdigit():
+            print("❌ Invalid choice.")
+            input("\nPress Enter to continue...")
+            break
+
+        choice = int(choice)
+
+        if choice == 0:
+            break
+
+        if choice < 1 or choice > len(matches):
+            print("❌ Invalid choice.")
+            input("\nPress Enter to continue...")
+            break
+
+        selected_book = matches[choice - 1]
+
+        while True:
+            confirm = input("Are you sure you want to remove '" + selected_book + "'? (y/n): ").strip().lower()
+            if confirm == "y" or confirm == "n":
                 break
+            print("❌ Please answer with y or n.")
+
+        if confirm == "y":
+            books.remove(selected_book)
+            print("✅ Book removed.")
+        else:
+            print("❌ Cancelled.")
+
+        input("\nPress Enter to continue...")
+        break
 
 
-if __name__ == "__main__":
-    library_manager()
+def count_books():
+    clear_screen()
+    print("📊 Number of books")
+    print("---------------")
+    print("You have " + str(len(books)) + " book(s) in your library.")
+    input("\nPress Enter to continue...")
+
+
+def show_menu():
+    clear_screen()
+    print("""
+        ========================================
+                   📚 MY LIBRARY 📚
+        ========================================
+        [1] 📖 Add a book
+        [2] 📚 Show all books
+        [3] 🔍 Search a book
+        [4] 🗑️ Remove a book
+        [5] 📊 Count books
+        [6] 🚪 Quit
+        ========================================""")
+
+
+def main():
+    while True:
+        show_menu()
+        print("")
+        choice = input(">> ").strip()
+
+        if not choice:
+            continue
+
+        if choice == "1":
+            add_book()
+        elif choice == "2":
+            show_books()
+        elif choice == "3":
+            search_book()
+        elif choice == "4":
+            remove_book()
+        elif choice == "5":
+            count_books()
+        elif choice == "6":
+            clear_screen()
+            sleep(1)
+            print("""
+                    ========================================
+                                👋 EXITING 👋
+                    ========================================
+
+                    Thanks for using Book Manager!
+
+                    See you next time! 
+                    ========================================
+                    """)
+            sleep(2)
+            break
+        else:
+            print("❌ Invalid option, choose a number between 1 and 6.")
+            input("\nPress Enter to continue...")
+
+
+__name__ = "__main__":
+    main()
