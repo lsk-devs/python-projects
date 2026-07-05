@@ -207,5 +207,5 @@ def main():
             input("\nPress Enter to continue...")
 
 
-__name__ = "__main__":
+if __name__ = "__main__":
     main()
