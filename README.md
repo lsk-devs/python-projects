@@ -10,6 +10,8 @@ Each project reflects what I knew at the time it was made. Instead of deleting o
 
 - `2nde/` → Projects created during my final year of secondary school before starting NSI.
 - More folders will be added as I continue learning.
+- All project require python3 to be launched.
+- All the project are in the os but i will make some real project when i feel comfortable with python.
 
 ## Technologies
 
