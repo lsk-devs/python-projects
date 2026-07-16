@@ -12,6 +12,15 @@ Each project reflects what I knew at the time it was made. Instead of deleting o
 - More folders will be added as I continue learning.
 - All project require python3 to be launched.
 - All the project are in the os but i will make some real project when i feel comfortable with python.
+- Latest changes:
+    - NEW PROJECT ADDED : Calculator_v1.py (soon v2 added)
+    - Reworked Book_manager.py
+    - Fixed Bugs
+
+- SOON:
+    - Calculator_v2.py
+    - TicTacToe.py
+    - General rework
 
 ## Technologies
 
